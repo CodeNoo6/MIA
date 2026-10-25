@@ -4,6 +4,7 @@ import { ErrorMessage } from '~/components/Auth/ErrorMessage';
 import { TranslationKeys, useLocalize } from '~/hooks';
 import SocialLoginRender from './SocialLoginRender';
 import { BlinkAnimation } from './BlinkAnimation';
+import { DEFAULT_APP_TITLE } from '~/common';
 import { Banner } from '../Banners';
 import Showcase from './Showcase';
 import Footer from './Footer';
@@ -62,12 +63,12 @@ function AuthLayout({
 
   return (
     <div className="flex min-h-screen bg-surface-primary">
-      <Showcase appTitle={startupConfig?.appTitle ?? 'LibreChat'} />
+      <Showcase appTitle={startupConfig?.appTitle ?? DEFAULT_APP_TITLE} />
       <div className="relative flex min-h-screen flex-1 flex-col">
         <Banner />
         <div className="mx-auto mt-8 max-w-sm px-6 text-center lg:hidden">
           <p className="text-lg font-semibold text-text-primary">
-            {startupConfig?.appTitle ?? 'LibreChat'}
+            {startupConfig?.appTitle ?? DEFAULT_APP_TITLE}
           </p>
           <p className="mt-1 text-sm text-text-secondary">
             {localize('com_auth_showcase_tagline')}
@@ -84,7 +85,7 @@ function AuthLayout({
               <img
                 src="assets/logo.svg"
                 className="mx-auto mb-6 size-24 object-contain"
-                alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'LibreChat' })}
+                alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? DEFAULT_APP_TITLE })}
               />
             </BlinkAnimation>
             {!hasStartupConfigError && !isFetching && header && (

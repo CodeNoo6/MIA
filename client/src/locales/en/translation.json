@@ -1,5 +1,8 @@
 {
   "com_auth_showcase_agent_backtest_area": "Finance",
+  "com_auth_showcase_agent_catlife_area": "Pets",
+  "com_auth_showcase_agent_catlife_desc": "Vaccines, health history and a QR card for your cat.",
+  "com_auth_showcase_agent_catlife_title": "Cat Life",
   "com_auth_showcase_agent_institutional_area": "Institutional",
   "com_auth_showcase_agent_institutional_desc": "Syllabus-based monitor for each course.",
   "com_auth_showcase_agent_institutional_title": "Support agents",

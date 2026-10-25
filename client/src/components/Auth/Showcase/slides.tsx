@@ -13,7 +13,11 @@ import type { TranslationKeys } from '~/hooks';
 import { useLocalize } from '~/hooks';
 
 type Feature = { icon: LucideIcon; title: TranslationKeys; description: TranslationKeys };
-type Agent = Feature & { area: TranslationKeys };
+type Agent = Omit<Feature, 'icon'> & {
+  area: TranslationKeys;
+  icon?: LucideIcon;
+  image?: string;
+};
 
 const agents: Agent[] = [
   {
@@ -33,6 +37,12 @@ const agents: Agent[] = [
     area: 'com_auth_showcase_agent_backtest_area',
     title: 'com_auth_showcase_backtest_title',
     description: 'com_auth_showcase_backtest_desc',
+  },
+  {
+    image: 'assets/catlife.png',
+    area: 'com_auth_showcase_agent_catlife_area',
+    title: 'com_auth_showcase_agent_catlife_title',
+    description: 'com_auth_showcase_agent_catlife_desc',
   },
 ];
 
@@ -134,15 +144,19 @@ export function PlatformSlide({ appTitle }: { appTitle: string }) {
         <h3 className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">
           {localize('com_auth_showcase_agents_title')}
         </h3>
-        <ul className="mt-3 grid grid-cols-3 gap-3">
-          {agents.map(({ icon: Icon, area, title, description }) => (
+        <ul className="mt-3 grid grid-cols-2 gap-3">
+          {agents.map(({ icon: Icon, image, area, title, description }) => (
             <li
               key={title}
               className="flex flex-col rounded-xl border border-border-light bg-surface-primary p-4"
             >
-              <span className="flex size-10 items-center justify-center rounded-lg bg-surface-tertiary text-accent-primary">
-                <Icon className="size-5" aria-hidden="true" />
-              </span>
+              {image != null ? (
+                <img src={image} alt="" aria-hidden="true" className="size-10 rounded-lg" />
+              ) : (
+                <span className="flex size-10 items-center justify-center rounded-lg bg-surface-tertiary text-accent-primary">
+                  {Icon && <Icon className="size-5" aria-hidden="true" />}
+                </span>
+              )}
               <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                 {localize(area)}
               </p>
