@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <title>Dog Life</title>
+  <defs><clipPath id="c"><circle cx="256" cy="256" r="219"/></clipPath></defs>
+  <circle cx="256" cy="256" r="250" fill="#F5A524"/>
+  <g clip-path="url(#c)">
+    <path d="M362 530 L374 318 C374 226 350 158 300 128 C260 106 216 116 194 150 L182 184 C156 188 118 192 94 200 C70 208 62 230 68 250 C74 270 94 280 116 282 L162 288 C184 304 200 324 208 346 L198 530 Z" fill="#1F2137"/>
+    <path d="M182 184 L238 246 L208 346 L162 288 Z" fill="#2E2C48"/>
+    <path d="M208 346 L264 312 L302 530 L198 530 Z" fill="#46405C"/>
+    <path d="M266 126 C306 102 354 124 364 176 L356 288 C350 322 314 334 296 302 L260 196 Z" fill="#46405C"/>
+    <path d="M296 150 C322 146 342 166 344 196 L338 274" fill="none" stroke="#5A5372" stroke-width="6" stroke-linecap="round"/>
+    <path d="M200 392 Q282 370 372 378 L371 410 Q282 400 199 422 Z" fill="#FFFFFF"/>
+    <circle cx="276" cy="430" r="16" fill="#FFFFFF"/>
+    <circle cx="276" cy="430" r="6" fill="#F5A524"/>
+  </g>
+  <path d="M138 283 Q140 306 154 304 Q164 300 160 286 Z" fill="#FFFFFF"/>
+  <path d="M100 262 Q128 278 162 270" fill="none" stroke="#46405C" stroke-width="4" stroke-linecap="round"/>
+  <path d="M64 232 Q64 210 90 208 Q110 210 110 228 Q106 248 84 250 Q66 248 64 232 Z" fill="#0E0F1C"/>
+  <ellipse cx="80" cy="220" rx="7" ry="4" fill="#FFFFFF" opacity="0.85"/>
+  <path d="M198 170 Q222 148 250 166 Q224 188 198 170 Z" fill="#FFFFFF"/>
+  <circle cx="227" cy="168" r="10" fill="#1F2137"/>
+  <circle cx="231" cy="164" r="3.2" fill="#FFFFFF"/>
+  <path d="M200 152 Q222 138 248 148" fill="none" stroke="#46405C" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="224" fill="none" stroke="#FFFFFF" stroke-width="9"/>
+</svg>

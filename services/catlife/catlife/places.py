@@ -13,8 +13,9 @@ RADIUS_M = 10_000
 
 
 def find_veterinaries(client: httpx.Client, api_key: str, location: str | None, latitude: float | None,
-                      longitude: float | None, emergency: bool = False, limit: int = 10) -> list[dict]:
-    query = "veterinaria de urgencias 24 horas" if emergency else "veterinaria para gatos"
+                      longitude: float | None, emergency: bool = False, limit: int = 10,
+                      species_plural: str = "gatos") -> list[dict]:
+    query = "veterinaria de urgencias 24 horas" if emergency else f"veterinaria para {species_plural}"
     body: dict = {"textQuery": f"{query} en {location}" if location else query, "languageCode": "es",
                   "maxResultCount": limit}
     if latitude is not None and longitude is not None:

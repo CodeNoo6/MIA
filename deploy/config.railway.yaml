@@ -23,8 +23,9 @@ interface:
   sharedLinks: false
   schedules: false
   skills: false
+  # The agent marketplace groups agents by category, e.g. Cuidado animal for Cat Life and Dog Life.
   marketplace:
-    use: false
+    use: true
   remoteAgents:
     use: false
   agents:
@@ -72,11 +73,26 @@ mcpServers:
     type: streamable-http
     url: http://catlife-mcp.railway.internal:8001/mcp/
     title: 'Cat Life'
-    description: 'Gatos, vacunas, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
+    description: 'Gatos: vacunas, purgantes, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
     timeout: 60000
     serverInstructions: true
     headers:
       X-MIA-User-Id: '{{LIBRECHAT_USER_ID}}'
       X-MIA-User-Name: '{{LIBRECHAT_USER_NAME}}'
       X-MIA-User-Email: '{{LIBRECHAT_USER_EMAIL}}'
+      X-MIA-Species: 'gato'
+      X-CatLife-Token: '${CATLIFE_MCP_TOKEN}'
+
+  dog-life:
+    type: streamable-http
+    url: http://catlife-mcp.railway.internal:8001/mcp/
+    title: 'Dog Life'
+    description: 'Perros: vacunas, purgantes, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
+    timeout: 60000
+    serverInstructions: true
+    headers:
+      X-MIA-User-Id: '{{LIBRECHAT_USER_ID}}'
+      X-MIA-User-Name: '{{LIBRECHAT_USER_NAME}}'
+      X-MIA-User-Email: '{{LIBRECHAT_USER_EMAIL}}'
+      X-MIA-Species: 'perro'
       X-CatLife-Token: '${CATLIFE_MCP_TOKEN}'

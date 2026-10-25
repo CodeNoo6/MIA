@@ -1,6 +1,6 @@
-"""Public Cat Life portal: shared carnés, their QR and social image, photo uploads and calendar feeds.
+"""Public portal of the pet agents (Cat Life and Dog Life): shared carnés, their QR and social image, photo uploads and calendar feeds.
 
-Nothing here is reachable without a random token; a carné token unlocks one cat's profile and vaccines,
+Nothing here is reachable without a random token; a carné token unlocks one pet's profile and vaccines,
 a calendar token one user's agenda, and an upload token one photo write for thirty minutes.
 """
 
@@ -14,6 +14,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import HTMLResponse, Response
 
 from catlife import card as render
+from catlife import care
 from catlife.store import NotFound, Store
 
 STYLE = """
@@ -49,13 +50,14 @@ def _dmy(value: str | None) -> str:
 
 
 def _card_html(card: dict, url: str) -> HTMLResponse:
-    cat = card["cat"]
-    name = escape(cat["name"])
-    text = f"Carné de vacunación de {cat['name']}"
-    avatar = (f'<img class="avatar" src="{url}/foto" alt="Foto de {name}">' if cat["has_photo"]
-              else f'<div class="avatar" aria-hidden="true">{escape(cat["name"][:1].upper())}</div>')
+    pet = card["pet"]
+    name = escape(pet["name"])
+    brand = care.BRANDS[pet.get("species", care.DEFAULT_SPECIES)]
+    text = f"Carné de vacunación de {pet['name']}"
+    avatar = (f'<img class="avatar" src="{url}/foto" alt="Foto de {name}">' if pet["has_photo"]
+              else f'<div class="avatar" aria-hidden="true">{escape(pet["name"][:1].upper())}</div>')
     facts = "".join(f"<div><dt>{escape(label)}</dt><dd>{escape(value)}</dd></div>"
-                    for label, value in render.cat_facts(cat))
+                    for label, value in render.pet_facts(pet))
     rows = "".join(
         f"<tr><td>{escape(v['name'])}</td><td>{v.get('doses_applied', 0)}</td><td>{_dmy(v.get('last_applied'))}</td>"
         f"<td class=\"{'late' if v.get('next_due') and v['next_due'] < card['generated'] else 'ok'}\">"
@@ -68,13 +70,13 @@ def _card_html(card: dict, url: str) -> HTMLResponse:
     payload = json.dumps({"title": text, "url": url}).replace("</", "<\\/")
     head = (
         f'<meta property="og:type" content="website"><meta property="og:title" content="{escape(text)}">'
-        f'<meta property="og:description" content="Vacunas y datos de {name}, compartido desde MIA · Cat Life.">'
+        f'<meta property="og:description" content="Vacunas y datos de {name}, compartido desde MIA · {brand}.">'
         f'<meta property="og:image" content="{url}/imagen.png"><meta property="og:url" content="{url}">'
         f'<meta name="twitter:card" content="summary_large_image">'
     )
     body = f"""
 <section class="card head">{avatar}<div><p class="muted">Carné de vacunación</p><h1>{name}</h1>
-<p class="muted">{escape(cat.get('species') or 'Felino')} · actualizado {_dmy(card['generated'])}</p></div></section>
+<p class="muted">{escape(pet.get('species') or 'Felino')} · actualizado {_dmy(card['generated'])}</p></div></section>
 <section class="card"><h2>Datos</h2><dl>{facts}</dl></section>
 <section class="card"><h2>Vacunas</h2><table><thead><tr><th>Vacuna</th><th>Dosis</th><th>Aplicada</th><th>Próxima</th></tr></thead>
 <tbody>{rows}</tbody></table></section>
@@ -117,12 +119,12 @@ def _calendar_html(links: dict) -> HTMLResponse:
         sections.append(f'<section class="card" data-os="{system}"><h2>{escape(label)}</h2>'
                         f'<div class="share">{button}</div><p class="muted">{escape(help_text)}</p></section>')
     payload = json.dumps(links["ics_url"]).replace("</", "<\\/")
-    return _page("Calendario Cat Life", f"""
-<section class="card"><h1>Calendario Cat Life</h1>
+    return _page("Calendario MIA · Cuidado animal", f"""
+<section class="card"><h1>Calendario de tus mascotas</h1>
 <p class="muted">Conéctalo una sola vez. Desde entonces cada vacuna, purgante, antipulgas o cita que programes con
 el agente aparece sola en tu calendario, con avisos un día antes y el mismo día.</p>
 <div class="share"><button id="copy" type="button">Copiar enlace del calendario</button>
-<a href="{escape(links["ics_url"])}" download="cat-life.ics">Descargar .ics (copia única, no se actualiza)</a></div>
+<a href="{escape(links["ics_url"])}" download="pet-life.ics">Descargar .ics (copia única, no se actualiza)</a></div>
 </section>
 <div id="systems">{"".join(sections)}</div>
 <script>
@@ -148,7 +150,7 @@ def create_app(get_store: Callable[[], Store], public_url: str) -> FastAPI:
         return f"{public_url}/carne/{token}"
 
     def photo_bytes(card: dict) -> dict | None:
-        return get_store().photo(card["cat"]["id"]) if card["cat"]["has_photo"] else None
+        return get_store().photo(card["pet"]["id"]) if card["pet"]["has_photo"] else None
 
     @app.get("/health")
     def health() -> dict:
@@ -174,7 +176,7 @@ def create_app(get_store: Callable[[], Store], public_url: str) -> FastAPI:
     def cat_photo(token: str) -> Response:
         photo = photo_bytes(card_or_404(token))
         if photo is None:
-            raise HTTPException(404, "Este gato no tiene foto.")
+            raise HTTPException(404, "Esta mascota no tiene foto.")
         return Response(photo["data"], media_type=photo["content_type"])
 
     @app.get("/foto/{token}", response_class=HTMLResponse)

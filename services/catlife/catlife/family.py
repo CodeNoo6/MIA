@@ -1,9 +1,9 @@
-"""Households: several MIA users caring for the same cats.
+"""Households: several MIA users caring for the same pets.
 
 Every Cat Life document carries an `owner`, the data space it belongs to. A user outside any household owns
 the space named after their own MIA user id; a household member works in the household's space instead.
-Joining moves the user's own cats into the household when they ask for it; the last member to leave takes
-the household's cats back to their personal space, so nothing is orphaned.
+Joining moves the user's own pets into the household when they ask for it; the last member to leave takes
+the household's pets back to their personal space, so nothing is orphaned.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from datetime import datetime, timedelta, timezone
 from pymongo import DESCENDING
 from pymongo.database import Database
 
-OWNED = ("cats", "vaccines", "records", "weights", "conditions", "appointments", "reminders", "vets", "photos",
+OWNED = ("pets", "vaccines", "records", "weights", "conditions", "appointments", "reminders", "vets", "photos",
          "activity")
 INVITE_TTL = timedelta(days=7)
 EMAIL_INVITE_TTL = timedelta(days=14)
@@ -74,7 +74,7 @@ class Family:
         }
 
     def _household(self, user_id: str, name: str | None) -> str:
-        """The user's household, creating it from their own space (and cats) on first share."""
+        """The user's household, creating it from their own space (and pets) on first share."""
         member = self.db.members.find_one({"_id": user_id})
         if member is not None:
             return member["household"]
@@ -115,7 +115,7 @@ class Family:
         invites = self.db.invites.find({"email": email.lower(), "expires_at": {"$gt": _now()}})
         return [{"code": invite["_id"], "from": invite.get("inviter") or "Un usuario de MIA",
                  "members": [m.get("name") or "Sin nombre" for m in self.db.members.find({"household": invite["household"]})],
-                 "cats": [c["name"] for c in self.db.cats.find({"owner": invite["household"]}, {"name": 1})],
+                 "pets": [c["name"] for c in self.db.pets.find({"owner": invite["household"]}, {"name": 1})],
                  "expires": _aware(invite["expires_at"]).date().isoformat()} for invite in invites]
 
     def decline(self, email: str | None, code: str) -> dict:
@@ -124,7 +124,7 @@ class Family:
             raise ValueError("No tienes una invitación con ese código.")
         return {"declined": code}
 
-    def join(self, user_id: str, name: str | None, code: str, bring_my_cats: bool, email: str | None = None) -> dict:
+    def join(self, user_id: str, name: str | None, code: str, bring_my_pets: bool, email: str | None = None) -> dict:
         invite = self.db.invites.find_one({"_id": code.strip().upper()})
         if invite is None or _aware(invite["expires_at"]) < _now():
             raise ValueError("El código no existe o venció. Pide uno nuevo a quien te invitó.")
@@ -140,8 +140,8 @@ class Family:
                                                "joined_at": _now()}))
         if invite.get("email"):
             self.db.invites.delete_one({"_id": invite["_id"]})
-        moved = self._move(user_id, invite["household"]) if bring_my_cats else {}
-        return {"joined": True, "moved": moved, "kept_private": not bring_my_cats}
+        moved = self._move(user_id, invite["household"]) if bring_my_pets else {}
+        return {"joined": True, "moved": moved, "kept_private": not bring_my_pets}
 
     def leave(self, user_id: str) -> dict:
         member = self.db.members.find_one({"_id": user_id})
@@ -168,17 +168,17 @@ class Family:
             raise ValueError("Esa persona no está en tu hogar.")
         return {"removed": member_id}
 
-    def log(self, space: str, user_id: str, name: str | None, action: str, cat_id: str | None,
+    def log(self, space: str, user_id: str, name: str | None, action: str, pet_id: str | None,
             detail: str | None) -> None:
         self.db.activity.insert_one({"owner": space, "by": user_id, "by_name": name, "action": action,
-                                     "cat_id": cat_id, "detail": detail, "at": _now()})
+                                     "pet_id": pet_id, "detail": detail, "at": _now()})
 
     def activity(self, space: str, user_id: str, days: int = 7) -> list[dict]:
         since = _now() - timedelta(days=days)
-        names = {cat["_id"]: cat["name"] for cat in self.db.cats.find({"owner": space}, {"name": 1})}
+        names = {pet["_id"]: pet["name"] for pet in self.db.pets.find({"owner": space}, {"name": 1})}
         return [
             {"when": _aware(entry["at"]).isoformat(timespec="minutes"), "who": entry.get("by_name") or "Alguien",
              "is_you": entry["by"] == user_id, "action": entry["action"], "detail": entry.get("detail"),
-             "cat": names.get(entry.get("cat_id"))}
+             "pet": names.get(entry.get("pet_id"))}
             for entry in self.db.activity.find({"owner": space, "at": {"$gte": since}}).sort("at", -1).limit(50)
         ]
