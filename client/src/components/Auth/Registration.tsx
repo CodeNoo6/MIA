@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { loginPage } from 'librechat-data-provider';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
+import { Link, useOutletContext, useLocation } from 'react-router-dom';
 import { useRegisterUserMutation } from 'librechat-data-provider/react-query';
 import { ThemeContext, SecretInput, Spinner, Button, Input, isDark } from '@librechat/client';
 import type { TRegisterUser, TError } from 'librechat-data-provider';
 import type { TLoginLayoutContext } from '~/common';
 import { useLocalize, TranslationKeys } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 
 const Registration: React.FC = () => {
-  const navigate = useNavigate();
   const localize = useLocalize();
+  const { login } = useAuthContext();
   const { theme } = useContext(ThemeContext);
   const { startupConfig, startupConfigError, isFetching } = useOutletContext<TLoginLayoutContext>();
 
@@ -26,7 +26,6 @@ const Registration: React.FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [countdown, setCountdown] = useState<number>(3);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const location = useLocation();
@@ -48,20 +47,8 @@ const Registration: React.FC = () => {
     onMutate: () => {
       setIsSubmitting(true);
     },
-    onSuccess: () => {
-      setIsSubmitting(false);
-      setCountdown(3);
-      const timer = setInterval(() => {
-        setCountdown((prevCountdown) => {
-          if (prevCountdown <= 1) {
-            clearInterval(timer);
-            navigate('/c/new', { replace: true });
-            return 0;
-          } else {
-            return prevCountdown - 1;
-          }
-        });
-      }, 1000);
+    onSuccess: (_data, { email, password }) => {
+      login({ email, password });
     },
     onError: (error: unknown) => {
       setIsSubmitting(false);
@@ -130,20 +117,6 @@ const Registration: React.FC = () => {
         <ErrorMessage>
           {localize('com_auth_error_create')} {errorMessage}
         </ErrorMessage>
-      )}
-      {registerUser.isSuccess && countdown > 0 && (
-        <div
-          className="rounded-md border border-status-success-border bg-status-success-subtle px-3 py-2 text-sm text-text-secondary"
-          role="alert"
-        >
-          {localize(
-            startupConfig?.emailEnabled
-              ? 'com_auth_registration_success_generic'
-              : 'com_auth_registration_success_insecure',
-          ) +
-            ' ' +
-            localize('com_auth_email_verification_redirecting', { 0: countdown.toString() })}
-        </div>
       )}
       {!startupConfigError && !isFetching && (
         <>
@@ -241,13 +214,13 @@ const Registration: React.FC = () => {
 
           <p className="my-4 text-center text-sm font-light text-text-secondary">
             {localize('com_auth_already_have_account')}{' '}
-            <a
-              href={loginPage()}
+            <Link
+              to="/login"
               aria-label="Login"
               className="inline-flex p-1 text-sm font-medium text-accent-primary transition-colors hover:text-accent-primary-hover"
             >
               {localize('com_auth_login')}
-            </a>
+            </Link>
           </p>
         </>
       )}

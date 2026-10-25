@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { ThemeContext, SecretInput, Spinner, Button, Input, isDark } from '@librechat/client';
@@ -146,12 +147,12 @@ const LoginForm: React.FC<TLoginFormProps> = ({ onSubmit, startupConfig, error, 
           {renderError('password')}
         </div>
         {startupConfig.passwordResetEnabled && (
-          <a
-            href="/forgot-password"
+          <Link
+            to="/forgot-password"
             className="inline-flex p-1 text-sm font-medium text-accent-primary underline decoration-transparent transition-all duration-200 hover:text-accent-primary-hover hover:decoration-accent-primary-hover focus:text-accent-primary-hover focus:decoration-accent-primary-hover"
           >
             {localize('com_auth_password_forgot')}
-          </a>
+          </Link>
         )}
 
         {requireCaptcha && (
