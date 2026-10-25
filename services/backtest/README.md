@@ -59,14 +59,17 @@ Reglas:
 
 ## Desplegar en Railway
 
-1. Crea dos servicios desde este repo con **Root Directory** `services/backtest`:
-   - `backtest-engine`: start command por defecto, y un **volumen** montado en `/data`, donde quedan los informes.
-   - `backtest-mcp`: start command `python -m mcp_server.server`, con
-     `BACKTEST_ENGINE_URL=http://backtest-engine.railway.internal:8000` y
-     `BACKTEST_PORTAL_URL=<dominio público del engine>`.
-2. Expón públicamente solo `backtest-engine`, por el portal. El MCP va solo por red privada.
-3. En el servicio LibreChat define `CONFIG_PATH=/app/deploy/config.yaml` y cambia en ese archivo la URL del MCP y
-   `allowedAddresses` a `backtest-mcp.railway.internal:8001`.
+Los dos servicios salen del mismo repo con **Root Directory** `services/backtest`. Escuchan en IPv4 e IPv6 a la vez
+(`engine/serve.py`), así que funcionan con el dominio público y con la red privada de Railway.
+
+| Servicio | Start command | Variables | Red |
+|---|---|---|---|
+| `backtest-engine` | (por defecto) | `PORT=8000` | Dominio público en el puerto 8000 (portal) y un volumen montado en `/data` |
+| `backtest-mcp` | `python -m mcp_server.server` | `PORT=8001`, `BACKTEST_ENGINE_URL=http://backtest-engine.railway.internal:8000`, `BACKTEST_PORTAL_URL=https://<dominio del engine>` | Solo privada |
+
+En el servicio LibreChat (Source: este repo, Dockerfile de la raíz) define `CONFIG_PATH=/app/deploy/config.railway.yaml`;
+ese archivo ya apunta a `backtest-mcp.railway.internal:8001`. Los nombres de los servicios deben ser exactamente
+`backtest-engine` y `backtest-mcp` para que esos hostnames resuelvan.
 
 ## Pendiente antes de producción
 

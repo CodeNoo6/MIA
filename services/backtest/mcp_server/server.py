@@ -34,8 +34,6 @@ mcp = FastMCP(
         "Herramientas de solo lectura sobre informes ya calculados por el motor determinista. "
         "Nunca estimes ni calcules métricas: cita los valores devueltos. Para un escenario hipotético usa request_rerun."
     ),
-    host="0.0.0.0",
-    port=int(os.environ.get("PORT", "8001")),
 )
 
 
@@ -133,4 +131,6 @@ def verify_report(report_id: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    from engine.serve import serve
+
+    serve(mcp.streamable_http_app(), 8001)
