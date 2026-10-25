@@ -54,6 +54,33 @@ webSearch:
     maxResults: 5
     topic: general
 
+# Natural voice through OpenAI: Whisper listens in Spanish and gpt-4o-mini-tts answers. Every user starts in
+# conversation mode (speak, auto-send after 3 s of silence, hear the answer); each can change it in Settings.
+speech:
+  stt:
+    openai:
+      apiKey: '${SPEECH_OPENAI_API_KEY}'
+      model: 'whisper-1'
+  tts:
+    openai:
+      apiKey: '${SPEECH_OPENAI_API_KEY}'
+      model: 'gpt-4o-mini-tts'
+      voices: ['nova', 'coral', 'shimmer', 'sage', 'alloy', 'ash', 'echo', 'onyx']
+  speechTab:
+    conversationMode: true
+    advancedMode: false
+    speechToText:
+      engineSTT: 'openai'
+      languageSTT: 'es-CO'
+      autoTranscribeAudio: true
+      autoSendText: 3
+    textToSpeech:
+      engineTTS: 'openai'
+      voice: 'nova'
+      languageTTS: 'es'
+      automaticPlayback: true
+      playbackRate: 1
+
 mcpSettings:
   # The backtest MCP runs on the private Docker/Railway network; exempt exactly that host and port.
   allowedAddresses:
