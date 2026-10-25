@@ -1,7 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
-import { useOutletContext } from 'react-router-dom';
-import { loginPage } from 'librechat-data-provider';
+import { Link, useOutletContext } from 'react-router-dom';
 import { Spinner, Button, Alert, Input } from '@librechat/client';
 import { useRequestPasswordResetMutation } from 'librechat-data-provider/react-query';
 import type { TRequestPasswordReset, TRequestPasswordResetResponse } from 'librechat-data-provider';
@@ -22,12 +21,12 @@ const ResetPasswordBodyText = () => {
   return (
     <div className="flex flex-col space-y-4">
       <p>{localize('com_auth_reset_password_if_email_exists')}</p>
-      <a
+      <Link
         className="inline-flex text-sm font-medium text-accent-primary transition-colors hover:text-accent-primary-hover"
-        href={loginPage()}
+        to="/login"
       >
         {localize('com_auth_back_to_login')}
-      </a>
+      </Link>
     </div>
   );
 };
@@ -131,12 +130,12 @@ function RequestPasswordReset() {
         >
           {isLoading ? <Spinner /> : localize('com_auth_continue')}
         </Button>
-        <a
-          href={loginPage()}
+        <Link
+          to="/login"
           className="block text-center text-sm font-medium text-accent-primary transition-colors hover:text-accent-primary-hover"
         >
           {localize('com_auth_back_to_login')}
-        </a>
+        </Link>
       </div>
     </form>
   );

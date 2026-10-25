@@ -1,0 +1,39 @@
+services:
+  api:
+    image: mia-local:latest
+    build:
+      context: .
+      target: node
+    volumes:
+      - type: bind
+        source: ./deploy/config.yaml
+        target: /app/librechat.yaml
+    depends_on:
+      - backtest-mcp
+
+  backtest-engine:
+    container_name: backtest-engine
+    image: mia-backtest:latest
+    build:
+      context: ./services/backtest
+    restart: always
+    environment:
+      - BACKTEST_DATA_DIR=/data
+    ports:
+      - "8100:8000"
+    volumes:
+      - backtest-data:/data
+
+  backtest-mcp:
+    container_name: backtest-mcp
+    image: mia-backtest:latest
+    restart: always
+    command: ["python", "-m", "mcp_server.server"]
+    environment:
+      - BACKTEST_ENGINE_URL=http://backtest-engine:8000
+      - BACKTEST_PORTAL_URL=http://localhost:8100
+    depends_on:
+      - backtest-engine
+
+volumes:
+  backtest-data:

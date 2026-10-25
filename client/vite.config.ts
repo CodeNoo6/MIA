@@ -64,6 +64,10 @@ export default defineConfig(({ command }) => ({
         target: backendURL,
         changeOrigin: true,
       },
+      '/images': {
+        target: backendURL,
+        changeOrigin: true,
+      },
     },
   },
   // Set the directory where environment variables are loaded from and restrict prefixes
@@ -151,11 +155,13 @@ export default defineConfig(({ command }) => ({
       },
       includeAssets: [],
       manifest: {
-        name: 'LibreChat',
-        short_name: 'LibreChat',
+        name: 'MIA',
+        short_name: 'MIA',
+        description:
+          'Plataforma de agentes de IA especializados que analizan tus datos y te entregan informes con evidencia.',
         display: 'standalone',
-        background_color: '#000000',
-        theme_color: '#009688',
+        background_color: '#132033',
+        theme_color: '#132033',
         icons: [
           {
             src: 'assets/favicon-32x32.png',

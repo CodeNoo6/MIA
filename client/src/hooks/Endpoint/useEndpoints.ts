@@ -19,7 +19,7 @@ import type {
 } from 'librechat-data-provider';
 import type { ProviderIconResolution } from './useProviderIcon';
 import type { Endpoint } from '~/common';
-import { useHasAccess, useShowMarketplace } from '~/hooks';
+import { useHasAccess, useLocalize, useShowMarketplace } from '~/hooks';
 import { resolveProviderIcon } from './useProviderIcon';
 import { useGetEndpointsQuery } from '~/data-provider';
 import { mapEndpoints } from '~/utils';
@@ -68,6 +68,7 @@ export const useEndpoints = ({
   endpointsConfig: TEndpointsConfig;
   startupConfig: TStartupConfig | undefined;
 }) => {
+  const localize = useLocalize();
   const modelsQuery = useGetModelsQuery();
   const { data: endpoints = [] } = useGetEndpointsQuery({ select: mapEndpoints });
   const interfaceConfig = startupConfig?.interface ?? defaultInterface;
@@ -133,7 +134,8 @@ export const useEndpoints = ({
       // Base result object with formatted default icon
       const result: Endpoint = {
         value: ep,
-        label: alternateName[ep] || ep,
+        label:
+          ep === EModelEndpoint.agents ? localize('com_ui_my_agents') : alternateName[ep] || ep,
         hasModels,
         icon: createEndpointIcon(ep, resolveProviderIcon({ endpoint: ep, endpointsConfig })),
       };
@@ -221,6 +223,7 @@ export const useEndpoints = ({
     azureAssistants,
     endpointsConfig,
     filteredEndpoints,
+    localize,
     modelsQuery.data,
     showAgentMarketplace,
   ]);
