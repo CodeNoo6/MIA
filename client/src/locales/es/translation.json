@@ -204,6 +204,8 @@
   "com_auth_password_min_length": "La contraseña debe tener al menos 8 caracteres",
   "com_auth_password_not_match": "Las contraseñas no coinciden",
   "com_auth_password_required": "Se requiere contraseña",
+  "com_auth_registration_success_generic": "Tu cuenta quedó creada. Revisa tu correo para verificarla y luego inicia sesión.",
+  "com_auth_registration_success_insecure": "Tu cuenta quedó creada. Inicia sesión para continuar.",
   "com_auth_reset_password": "Restablecer su contraseña",
   "com_auth_reset_password_if_email_exists": "Si existe una cuenta con ese correo electrónico, se le ha enviado un mensaje con instrucciones para restablecer su contraseña. Por favor, asegúrese de revisar su carpeta de correo no deseado.",
   "com_auth_reset_password_link_sent": "Correo electrónico enviado",

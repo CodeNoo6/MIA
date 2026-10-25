@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { Link, useOutletContext, useLocation } from 'react-router-dom';
 import { useRegisterUserMutation } from 'librechat-data-provider/react-query';
+import { Link, useNavigate, useOutletContext, useLocation } from 'react-router-dom';
 import { ThemeContext, SecretInput, Spinner, Button, Input, isDark } from '@librechat/client';
 import type { TRegisterUser, TError } from 'librechat-data-provider';
 import type { TLoginLayoutContext } from '~/common';
 import { useLocalize, TranslationKeys } from '~/hooks';
-import { useAuthContext } from '~/hooks/AuthContext';
+import { useLoginUserMutation } from '~/data-provider';
 import { ErrorMessage } from './ErrorMessage';
 
 const Registration: React.FC = () => {
   const localize = useLocalize();
-  const { login } = useAuthContext();
+  const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const { startupConfig, startupConfigError, isFetching } = useOutletContext<TLoginLayoutContext>();
 
@@ -26,6 +26,7 @@ const Registration: React.FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [needsManualLogin, setNeedsManualLogin] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const location = useLocation();
@@ -43,12 +44,31 @@ const Registration: React.FC = () => {
   const authSecretButtonClassName =
     'size-9 rounded-xl text-text-secondary-alt hover:bg-transparent hover:text-text-primary';
 
+  /**
+   * /register renders outside AuthContextProvider, so the new account signs in through the login mutation
+   * directly; the chat route's provider then restores the session from the refresh cookie it sets.
+   */
+  const loginUser = useLoginUserMutation({
+    onSuccess: (data) => {
+      if (data.twoFAPending && data.tempToken) {
+        navigate(`/login/2fa?tempToken=${encodeURIComponent(data.tempToken)}`, { replace: true });
+        return;
+      }
+      navigate('/c/new', { replace: true });
+    },
+    onError: () => {
+      setIsSubmitting(false);
+      setNeedsManualLogin(true);
+    },
+  });
+
   const registerUser = useRegisterUserMutation({
     onMutate: () => {
       setIsSubmitting(true);
+      setNeedsManualLogin(false);
     },
     onSuccess: (_data, { email, password }) => {
-      login({ email, password });
+      loginUser.mutate({ email, password });
     },
     onError: (error: unknown) => {
       setIsSubmitting(false);
@@ -117,6 +137,18 @@ const Registration: React.FC = () => {
         <ErrorMessage>
           {localize('com_auth_error_create')} {errorMessage}
         </ErrorMessage>
+      )}
+      {needsManualLogin && (
+        <div
+          className="rounded-md border border-status-success-border bg-status-success-subtle px-3 py-2 text-sm text-text-secondary"
+          role="alert"
+        >
+          {localize(
+            startupConfig?.emailEnabled
+              ? 'com_auth_registration_success_generic'
+              : 'com_auth_registration_success_insecure',
+          )}
+        </div>
       )}
       {!startupConfigError && !isFetching && (
         <>

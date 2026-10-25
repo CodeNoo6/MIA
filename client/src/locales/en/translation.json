@@ -1,4 +1,6 @@
 {
+  "com_auth_registration_success_generic": "Your account was created. Please check your email to verify it, then sign in.",
+  "com_auth_registration_success_insecure": "Your account was created. Sign in to continue.",
   "com_auth_showcase_agent_backtest_area": "Finance",
   "com_auth_showcase_agent_catlife_area": "Pets",
   "com_auth_showcase_agent_catlife_desc": "Vaccines, health history and a QR card for your cat.",
