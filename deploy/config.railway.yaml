@@ -23,7 +23,7 @@ interface:
   sharedLinks: false
   schedules: false
   skills: false
-  # The agent marketplace groups agents by category, e.g. Cuidado animal for Cat Life and Dog Life.
+  # The agent marketplace groups agents by category, e.g. Cuidado animal for the feline and canine caretakers.
   marketplace:
     use: true
   remoteAgents:
@@ -72,7 +72,7 @@ mcpServers:
   cat-life:
     type: streamable-http
     url: http://catlife-mcp.railway.internal:8001/mcp/
-    title: 'Cat Life'
+    title: 'Cuidador Felino'
     description: 'Gatos: vacunas, purgantes, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
     timeout: 60000
     serverInstructions: true
@@ -86,7 +86,7 @@ mcpServers:
   dog-life:
     type: streamable-http
     url: http://catlife-mcp.railway.internal:8001/mcp/
-    title: 'Dog Life'
+    title: 'Cuidador Canino'
     description: 'Perros: vacunas, purgantes, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
     timeout: 60000
     serverInstructions: true

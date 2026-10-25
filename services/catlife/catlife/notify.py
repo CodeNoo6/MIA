@@ -52,13 +52,14 @@ def invitation(to: str, inviter: str, pets: list[str], code: str, mia_url: str) 
     message["To"] = to
     message["Subject"] = f"{inviter} te invitó a cuidar a {names} en MIA"
     text = (f"{inviter} quiere compartir contigo a {names} en MIA (Cuidado animal).\n\n"
-            f"Entra a {mia_url} con tu cuenta, abre el agente Cat Life o Dog Life y acepta la invitación "
-            f"(código {code}). Verás sus vacunas, recordatorios y citas, y te enterarás de cada cambio.\n")
+            f"Entra a {mia_url} con tu cuenta, abre el Agente de Cuidador Felino o el de Cuidador Canino y "
+            f"acepta la invitación (código {code}). Verás sus vacunas, recordatorios y citas, y te enterarás de "
+            "cada cambio.\n")
     message.set_content(text)
     message.add_alternative(
         f"<p><strong>{escape(inviter)}</strong> quiere compartir contigo a <strong>{escape(names)}</strong> "
         f"en MIA (Cuidado animal).</p><p><a href=\"{escape(mia_url)}\">Entra a MIA</a> con tu cuenta, abre el "
-        f"agente <strong>Cat Life</strong> o <strong>Dog Life</strong> y acepta la invitación "
-        f"(código <code>{code}</code>).</p>"
+        f"<strong>Agente de Cuidador Felino</strong> o el <strong>de Cuidador Canino</strong> y acepta la "
+        f"invitación (código <code>{code}</code>).</p>"
         "<p>Verás sus vacunas, recordatorios y citas, y te enterarás de cada cambio.</p>", subtype="html")
     return message

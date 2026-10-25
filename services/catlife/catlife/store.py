@@ -1,4 +1,4 @@
-"""Owner-scoped persistence for the pet agents (Cat Life and Dog Life) on MongoDB.
+"""Owner-scoped persistence for the pet agents (Agente de Cuidador Felino and Canino) on MongoDB.
 
 Every read and write is filtered by `owner`, the data space of the MIA user the MCP receives from LibreChat:
 their own user id, or their household's id when they share pets with family (see `catlife.family`). The only

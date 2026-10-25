@@ -1,4 +1,4 @@
-"""Public portal of the pet agents (Cat Life and Dog Life): shared carnés, their QR and social image, photo uploads and calendar feeds.
+"""Public portal of the pet agents (Agente de Cuidador Felino and Canino): shared carnés, their QR and social image, photo uploads and calendar feeds.
 
 Nothing here is reachable without a random token; a carné token unlocks one pet's profile and vaccines,
 a calendar token one user's agenda, and an upload token one photo write for thirty minutes.
@@ -138,7 +138,7 @@ document.getElementById('copy').onclick=e=>{{navigator.clipboard.writeText(ics);
 
 
 def create_app(get_store: Callable[[], Store], public_url: str) -> FastAPI:
-    app = FastAPI(title="Cat Life", docs_url=None, redoc_url=None)
+    app = FastAPI(title="MIA · Cuidado animal", docs_url=None, redoc_url=None)
 
     def card_or_404(token: str) -> dict:
         card = get_store().public_card(token)

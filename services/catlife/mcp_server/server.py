@@ -1,4 +1,4 @@
-"""MCP server behind the pet agents of MIA: Cat Life for cats and Dog Life for dogs, per MIA user.
+"""MCP server behind the pet agents of MIA (Agente de Cuidador Felino and Canino), per MIA user.
 
 LibreChat sends the signed-in user's id in `X-MIA-User-Id` (from `{{LIBRECHAT_USER_ID}}` in the MCP
 server headers), the agent's species in `X-MIA-Species` (`gato` or `perro`, one MCP server entry per agent)
@@ -75,7 +75,7 @@ def _identity() -> Identity:
 
 
 def _species() -> str:
-    """The agent's species from `X-MIA-Species`; cats when absent, which is what Cat Life sent before dogs."""
+    """The agent's species from `X-MIA-Species`; cats when absent, which is what the cat agent sent before dogs."""
     request = mcp.get_context().request_context.request
     value = _header_text(request.headers.get("x-mia-species", "")) if request is not None else None
     return care.species_key(value)
@@ -542,7 +542,7 @@ def family_status() -> dict:
 @tool
 def share_pets_with(email: str) -> dict:
     """Comparte las mascotas del usuario con otro usuario de MIA por su correo: queda invitado al hogar familiar y
-    recibe un correo (si MIA tiene correo configurado) y un aviso al abrir el agente Cat Life o Dog Life. La otra
+    recibe un correo (si MIA tiene correo configurado) y un aviso al abrir el Agente de Cuidador Felino o Canino. La otra
     persona
     decide si acepta. Confirma el correo con el usuario antes de llamarla."""
     me = _identity()
@@ -561,7 +561,7 @@ def share_pets_with(email: str) -> dict:
         except OSError:
             email_sent = False
     return {**invite, "email_sent": email_sent, "in_app_notice": True,
-            "note": "Verá la invitación al abrir el agente Cat Life o Dog Life en MIA y podrá aceptarla o "
+            "note": "Verá la invitación al abrir el Agente de Cuidador Felino o Canino en MIA y podrá aceptarla o "
                     "rechazarla."}
 
 
@@ -585,7 +585,7 @@ def invite_to_family() -> dict:
     correo. Si el usuario aún no tiene hogar, lo crea con sus mascotas. Prefiere share_pets_with cuando den un correo."""
     me = _identity()
     invite = config.family().invite(me.user_id, me.name)
-    return {**invite, "how_to": "La otra persona entra a MIA con su cuenta, abre el agente Cat Life o Dog Life y "
+    return {**invite, "how_to": "La otra persona entra a MIA con su cuenta, abre el Agente de Cuidador Felino o Canino y "
                                 "escribe: "
                                 f"'quiero unirme a mi familia con el código {invite['code']}'."}
 

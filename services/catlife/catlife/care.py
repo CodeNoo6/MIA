@@ -26,7 +26,7 @@ SINGLE_DOSE = {"", "una sola vez", "única", "unica"}
 FREQUENCIES = sorted(set(FREQUENCY_MONTHS) | {"una sola vez"})
 
 SPECIES = {"gato": ("gato", "gatos"), "perro": ("perro", "perros")}
-BRANDS = {"gato": "Cat Life", "perro": "Dog Life"}
+BRANDS = {"gato": "Cuidador Felino", "perro": "Cuidador Canino"}
 DEFAULT_SPECIES = "gato"
 
 CAT_HUMAN_AGE = [
