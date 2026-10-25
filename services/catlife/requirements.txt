@@ -1,0 +1,11 @@
+fastapi==0.115.6
+uvicorn==0.34.0
+python-multipart==0.0.20
+pymongo==4.10.1
+httpx==0.28.1
+mcp==1.9.4
+pydantic==2.10.6
+pillow==11.1.0
+qrcode==8.0
+pytest==8.3.4
+mongomock==4.3.0

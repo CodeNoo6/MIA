@@ -57,6 +57,7 @@ mcpSettings:
   # The backtest MCP runs on the private Docker/Railway network; exempt exactly that host and port.
   allowedAddresses:
     - 'backtest-mcp:8001'
+    - 'catlife-mcp:8001'
 
 mcpServers:
   auditor-backtests:
@@ -66,3 +67,15 @@ mcpServers:
     description: 'Lee informes ya calculados por el motor determinista y pide nuevas corridas. No calcula métricas.'
     timeout: 120000
     serverInstructions: true
+
+  cat-life:
+    type: streamable-http
+    url: http://catlife-mcp:8001/mcp/
+    title: 'Cat Life'
+    description: 'Gatos, vacunas, historial clínico, recordatorios y carné; se comparten con la familia en MIA.'
+    timeout: 60000
+    serverInstructions: true
+    headers:
+      X-MIA-User-Id: '{{LIBRECHAT_USER_ID}}'
+      X-MIA-User-Name: '{{LIBRECHAT_USER_NAME}}'
+      X-MIA-User-Email: '{{LIBRECHAT_USER_EMAIL}}'

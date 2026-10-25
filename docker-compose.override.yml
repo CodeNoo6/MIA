@@ -10,6 +10,7 @@ services:
         target: /app/librechat.yaml
     depends_on:
       - backtest-mcp
+      - catlife-mcp
 
   backtest-engine:
     container_name: backtest-engine
@@ -34,6 +35,42 @@ services:
       - BACKTEST_PORTAL_URL=http://localhost:8100
     depends_on:
       - backtest-engine
+
+  catlife-portal:
+    container_name: catlife-portal
+    image: mia-catlife:latest
+    build:
+      context: ./services/catlife
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+      - CATLIFE_PUBLIC_URL=http://localhost:8200
+    ports:
+      - "8200:8000"
+    depends_on:
+      - mongodb
+
+  catlife-mcp:
+    container_name: catlife-mcp
+    image: mia-catlife:latest
+    restart: always
+    command: ["python", "-m", "mcp_server.server"]
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017
+      - CATLIFE_PUBLIC_URL=http://localhost:8200
+      - GOOGLE_PLACES_API_KEY=${GOOGLE_PLACES_API_KEY:-}
+      - MIA_URL=http://localhost:3080
+      - MIA_USERS_DB=LibreChat
+      - EMAIL_SERVICE=${EMAIL_SERVICE:-}
+      - EMAIL_HOST=${EMAIL_HOST:-}
+      - EMAIL_PORT=${EMAIL_PORT:-}
+      - EMAIL_ENCRYPTION=${EMAIL_ENCRYPTION:-}
+      - EMAIL_USERNAME=${EMAIL_USERNAME:-}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD:-}
+      - EMAIL_FROM=${EMAIL_FROM:-}
+      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME:-}
+    depends_on:
+      - mongodb
 
 volumes:
   backtest-data:
