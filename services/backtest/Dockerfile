@@ -9,7 +9,6 @@ COPY tests ./tests
 COPY sample ./sample
 
 ENV BACKTEST_DATA_DIR=/data PYTHONUNBUFFERED=1
-VOLUME /data
 EXPOSE 8000 8001
 
 CMD ["python", "-m", "engine.serve"]
