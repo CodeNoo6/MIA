@@ -1,0 +1,12 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <title>Agente de Hábitos</title>
+  <circle cx="256" cy="256" r="250" fill="#34C38F"/>
+  <g transform="rotate(-6 256 256)">
+    <rect x="138" y="146" width="38" height="220" rx="19" fill="#1F2137"/>
+    <rect x="200" y="132" width="38" height="234" rx="19" fill="#46405C"/>
+    <rect x="262" y="146" width="38" height="220" rx="19" fill="#1F2137"/>
+    <rect x="324" y="132" width="38" height="234" rx="19" fill="#46405C"/>
+    <rect x="106" y="238" width="296" height="40" rx="20" fill="#FFFFFF" transform="rotate(-24 256 258)"/>
+  </g>
+  <circle cx="256" cy="256" r="224" fill="none" stroke="#FFFFFF" stroke-width="9"/>
+</svg>

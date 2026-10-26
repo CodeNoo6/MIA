@@ -86,6 +86,7 @@ mcpSettings:
   allowedAddresses:
     - 'backtest-mcp:8001'
     - 'catlife-mcp:8001'
+    - 'habits-mcp:8001'
 
 mcpServers:
   auditor-backtests:
@@ -121,3 +122,13 @@ mcpServers:
       X-MIA-User-Name: '{{LIBRECHAT_USER_NAME}}'
       X-MIA-User-Email: '{{LIBRECHAT_USER_EMAIL}}'
       X-MIA-Species: 'perro'
+
+  habitos:
+    type: streamable-http
+    url: http://habits-mcp:8001/mcp/
+    title: 'Hábitos'
+    description: 'Cuenta cuántas veces comes algo, visitas a alguien, fumas o haces cualquier cosa, y lo grafica en el año.'
+    timeout: 60000
+    serverInstructions: true
+    headers:
+      X-MIA-User-Id: '{{LIBRECHAT_USER_ID}}'

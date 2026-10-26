@@ -29,7 +29,7 @@ afterAll(async () => {
 });
 
 describe('ensureDefaultCategories', () => {
-  it('seeds the animal care category after the stock ones and stays idempotent', async () => {
+  it('seeds the animal care and habits categories after the stock ones and stays idempotent', async () => {
     await methods.ensureDefaultCategories();
     await methods.ensureDefaultCategories();
 
@@ -43,6 +43,7 @@ describe('ensureDefaultCategories', () => {
       'sales',
       'aftersales',
       'animal_care',
+      'habits',
     ]);
     const animalCare = await AgentCategory.findOne({ value: 'animal_care' }).lean();
     expect(animalCare?.label).toBe('com_agents_category_animal_care');

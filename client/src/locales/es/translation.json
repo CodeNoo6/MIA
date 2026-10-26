@@ -25,6 +25,8 @@
   "com_agents_category_finance_description": "Agentes especializados en análisis financiero, presupuestos y contabilidad.",
   "com_agents_category_general": "General",
   "com_agents_category_general_description": "Agentes de uso general para tareas y consultas comunes",
+  "com_agents_category_habits": "Hábitos y bienestar",
+  "com_agents_category_habits_description": "Agentes que registran cuántas veces haces algo, tus buenos hábitos y los que quieres reducir, con gráficas del año",
   "com_agents_category_hr": "Recursos Humanos",
   "com_agents_category_hr_description": "Agentes especializados en procesos de recursos humanos, políticas y apoyo de los empleados",
   "com_agents_category_it": "TI",

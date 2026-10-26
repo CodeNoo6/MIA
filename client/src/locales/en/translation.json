@@ -155,6 +155,8 @@
   "com_agents_category_finance_description": "Agents specialized in financial analysis, budgeting, and accounting",
   "com_agents_category_general": "General",
   "com_agents_category_general_description": "General purpose agents for common tasks and inquiries",
+  "com_agents_category_habits": "Habits & Wellbeing",
+  "com_agents_category_habits_description": "Agents that track how often you do things, good habits and habits to cut down, with yearly charts",
   "com_agents_category_hr": "Human Resources",
   "com_agents_category_hr_description": "Agents specialized in HR processes, policies, and employee support",
   "com_agents_category_it": "IT",

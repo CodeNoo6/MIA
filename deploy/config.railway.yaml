@@ -86,6 +86,7 @@ mcpSettings:
   allowedAddresses:
     - 'backtest-mcp.railway.internal:8001'
     - 'catlife-mcp.railway.internal:8001'
+    - 'habits-mcp.railway.internal:8001'
 
 mcpServers:
   auditor-backtests:
@@ -123,3 +124,14 @@ mcpServers:
       X-MIA-User-Email: '{{LIBRECHAT_USER_EMAIL}}'
       X-MIA-Species: 'perro'
       X-CatLife-Token: '${CATLIFE_MCP_TOKEN}'
+
+  habitos:
+    type: streamable-http
+    url: http://habits-mcp.railway.internal:8001/mcp/
+    title: 'Hábitos'
+    description: 'Cuenta cuántas veces comes algo, visitas a alguien, fumas o haces cualquier cosa, y lo grafica en el año.'
+    timeout: 60000
+    serverInstructions: true
+    headers:
+      X-MIA-User-Id: '{{LIBRECHAT_USER_ID}}'
+      X-Habits-Token: '${HABITS_MCP_TOKEN}'
