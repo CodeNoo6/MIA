@@ -28,11 +28,11 @@ interface:
     use: true
   remoteAgents:
     use: false
+  # Sharing agents is left to Admin Settings (per role) instead of this file: when share/public are set
+  # here they overwrite every role on each start, including ADMIN, so the admin could never publish an agent.
   agents:
     use: true
     create: true
-    share: false
-    public: false
   mcpServers:
     use: true
     create: false
